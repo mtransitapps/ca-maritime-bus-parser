@@ -180,20 +180,41 @@ public class MaritimeBusAgencyTools extends DefaultAgencyTools {
 
 	private static final Pattern STARTS_WITH_TO = Pattern.compile("(^to )", Pattern.CASE_INSENSITIVE);
 
+	private static final Pattern ENDS_WITH_STATE = Pattern.compile("(\\, (PE|QC|NB|NS)$)", Pattern.CASE_INSENSITIVE);
+
+	private static final Pattern GREATER_INTERNATIONAL_AIRPORT = Pattern.compile("((^|\\W){1}(greater[\\s]*international airport)(\\W|$){1})",
+			Pattern.CASE_INSENSITIVE);
+	private static final String GREATER_INTERNATIONAL_AIRPORT_REPLACEMENT = "$2Airport$4";
+
+	private static final Pattern INTERNATIONAL = Pattern.compile("((^|\\W){1}(international)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String INTERNATIONAL_REPLACEMENT = "$2Int$4";
+
+	private static final Pattern UNIVERSITY = Pattern.compile("((^|\\W){1}(university)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final String UNIVERSITY_REPLACEMENT = "$2U$4";
+
 	@Override
 	public String cleanTripHeadsign(String tripHeadsign) {
 		tripHeadsign = STARTS_WITH_TO.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
+		tripHeadsign = ENDS_WITH_STATE.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
+		tripHeadsign = GREATER_INTERNATIONAL_AIRPORT.matcher(tripHeadsign).replaceAll(GREATER_INTERNATIONAL_AIRPORT_REPLACEMENT);
+		tripHeadsign = CleanUtils.SAINT.matcher(tripHeadsign).replaceAll(CleanUtils.SAINT_REPLACEMENT);
+		tripHeadsign = UNIVERSITY.matcher(tripHeadsign).replaceAll(UNIVERSITY_REPLACEMENT);
 		tripHeadsign = CleanUtils.removePoints(tripHeadsign);
 		tripHeadsign = CleanUtils.cleanNumbers(tripHeadsign);
+		tripHeadsign = CleanUtils.cleanStreetTypes(tripHeadsign);
 		tripHeadsign = CleanUtils.cleanStreetTypesFRCA(tripHeadsign);
 		return CleanUtils.cleanLabel(tripHeadsign);
 	}
 
 	@Override
 	public String cleanStopName(String gStopName) {
+		gStopName = CleanUtils.SAINT.matcher(gStopName).replaceAll(CleanUtils.SAINT_REPLACEMENT);
+		gStopName = INTERNATIONAL.matcher(gStopName).replaceAll(INTERNATIONAL_REPLACEMENT);
+		gStopName = UNIVERSITY.matcher(gStopName).replaceAll(UNIVERSITY_REPLACEMENT);
 		gStopName = CleanUtils.removePoints(gStopName);
 		gStopName = CleanUtils.cleanNumbers(gStopName);
 		gStopName = CleanUtils.cleanStreetTypes(gStopName);
+		gStopName = CleanUtils.cleanStreetTypesFRCA(gStopName);
 		return CleanUtils.cleanLabel(gStopName);
 	}
 
