@@ -26,7 +26,7 @@ import org.mtransit.parser.mt.data.MRoute;
 import org.mtransit.parser.mt.data.MTrip;
 import org.mtransit.parser.mt.data.MTripStop;
 
-// http://www.lockmedia.com/gtfs/feeds.asp
+// https://tdstickets.com/gtfs/
 // https://webstore.maritimebus.com/gtfs/maritime.zip
 public class MaritimeBusAgencyTools extends DefaultAgencyTools {
 
